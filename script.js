@@ -22,7 +22,7 @@ document.getElementById("speechForm").addEventListener("submit", async (e) => {
     audio.src = URL.createObjectURL(blob);
     audio.classList.remove("hidden");
   } catch (err) {
-    alert("Ocurrió un error. Intenta de nuevo.");
+    alert("OcurriÃ³ un error. Intenta de nuevo.");
   } finally {
     loader.classList.add("hidden");
   }
