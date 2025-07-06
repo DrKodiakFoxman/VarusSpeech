@@ -1,42 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Varus Speech 1.0</title>
-  <link rel="stylesheet" href="/static/css/styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Varus Speech 1.0.0</title>
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
   <div class="container">
-    <h1>Varus Speech 1.0</h1>
-    <div class="selectors">
-      <div>
+    <h1>Varus Speech 1.0.0</h1>
+    <form id="speechForm" method="post" action="/synthesize">
+      <div class="row">
         <label>Voz en inglés:</label>
-        <select id="voice_en">
-          {% for name in voices['en'] %}
-            <option>{{ name }}</option>
-          {% endfor %}
+        <select name="voice">
+          <option value="tts_models/en/jenny/jenny">Jenny (US)</option>
         </select>
-        <button onclick="testVoice('en')">Probar voz</button>
-      </div>
-      <div>
-        <label>Voz en español:</label>
-        <select id="voice_es">
-          {% for name in voices['es'] %}
-            <option>{{ name }}</option>
-          {% endfor %}
+        <label>Estilo:</label>
+        <select name="style">
+          <option value="default">Default</option>
+          <option value="cheerful">Cheerful</option>
+          <option value="sad">Sad</option>
+          <option value="angry">Angry</option>
         </select>
-        <button onclick="testVoice('es')">Probar voz</button>
       </div>
-    </div>
-    <form id="speechForm">
       <textarea name="text" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
-      <p class="warning">⚠️ Nota: evita símbolos fonéticos como /ɑː/ o /ˈ/ ya que se leerán literalmente.</p>
+      <div class="note">⚠️ Nota: evita símbolos fonéticos como /ɑː/ o /ʃ/ ya que se leerán literalmente.</div>
       <button type="submit">🔊 Reproducir</button>
-      <a id="download" class="download" style="display:none" download="output.mp3">⬇️ Descargar</a>
     </form>
-    <audio controls id="audio" style="display:none"></audio>
   </div>
-  <script src="/static/js/app.js"></script>
 </body>
 </html>
