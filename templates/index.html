@@ -1,38 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Text to Speech App</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <meta charset="UTF-8">
+    <title>Varus Speech</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>🗣️ English Text to Speech</h1>
-
-    <label for="voice-en">Voz en inglés:</label>
-    <select id="voice-en">
-      <option value="en-US-JennyNeural">Jenny (US)</option>
-      <option value="en-US-GuyNeural">Guy (US)</option>
-      <option value="en-GB-RyanNeural">Ryan (UK)</option>
-    </select>
-    <button onclick="previewVoice('en')">🔊 Probar voz</button>
-
-    <label for="voice-es">Voz en español:</label>
-    <select id="voice-es">
-      <option value="es-MX-DaliaNeural">Dalia (MX)</option>
-      <option value="es-ES-ElviraNeural">Elvira (España)</option>
-      <option value="es-MX-JorgeNeural">Jorge (MX)</option>
-    </select>
-    <button onclick="previewVoice('es')">🔊 Probar voz</button>
-
-    <textarea id="text-input" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
-    <div class="buttons">
-      <button onclick="playAudio()">🔊 Reproducir</button>
-      <button onclick="downloadAudio()">⬇️ Descargar</button>
+    <div class="container">
+        <h1>Varus Speech</h1>
+        <form id="speechForm" method="post" action="/speak">
+            <textarea name="text" placeholder="Type your text here..." required></textarea>
+            <div class="controls">
+                <label for="language">Language:</label>
+                <select name="language" id="language">
+                    <option value="en">English</option>
+                    <option value="es">Spanish</option>
+                </select>
+                <label for="style">Style:</label>
+                <select name="style" id="style">
+                    <option value="neutral">Neutral</option>
+                    <option value="cheerful">Cheerful</option>
+                    <option value="sad">Sad</option>
+                    <option value="narration">Narration</option>
+                </select>
+                <button type="submit">Generate Audio</button>
+            </div>
+        </form>
+        {% if audio_url %}
+        <div class="audio-output">
+            <audio controls autoplay>
+                <source src="{{ audio_url }}" type="audio/wav">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endif %}
     </div>
-    <audio id="audio-player" controls style="display:none;"></audio>
-  </div>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
