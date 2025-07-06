@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Text to Speech App</title>
+  <title>Varus Speech 1.0</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
   <div class="container">
-    <h1>🗣️ English Text to Speech</h1>
+    <h1>🎙️ Varus Speech 1.0</h1>
 
     <label for="voice-en">Voz en inglés:</label>
     <select id="voice-en">
@@ -27,10 +27,14 @@
     <button onclick="previewVoice('es')">🔊 Probar voz</button>
 
     <textarea id="text-input" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
+    <p class="note">⚠️ Nota: evita símbolos fonéticos como /ɑ:/ o /ˈ/ ya que se leerán literalmente.</p>
+
     <div class="buttons">
       <button onclick="playAudio()">🔊 Reproducir</button>
       <button onclick="downloadAudio()">⬇️ Descargar</button>
     </div>
+
+    <div id="loading" class="loading">⏳ Generando audio... por favor espera.</div>
     <audio id="audio-player" controls style="display:none;"></audio>
   </div>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
