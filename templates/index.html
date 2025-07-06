@@ -4,39 +4,39 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Varus Speech 1.0</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
   <div class="container">
-    <h1>🎙️ Varus Speech 1.0</h1>
-
-    <label for="voice-en">Voz en inglés:</label>
-    <select id="voice-en">
-      <option value="en-US-JennyNeural">Jenny (US)</option>
-      <option value="en-US-GuyNeural">Guy (US)</option>
-      <option value="en-GB-RyanNeural">Ryan (UK)</option>
-    </select>
-    <button onclick="previewVoice('en')">🔊 Probar voz</button>
-
-    <label for="voice-es">Voz en español:</label>
-    <select id="voice-es">
-      <option value="es-MX-DaliaNeural">Dalia (MX)</option>
-      <option value="es-ES-ElviraNeural">Elvira (España)</option>
-      <option value="es-MX-JorgeNeural">Jorge (MX)</option>
-    </select>
-    <button onclick="previewVoice('es')">🔊 Probar voz</button>
-
-    <textarea id="text-input" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
-    <p class="note">⚠️ Nota: evita símbolos fonéticos como /ɑ:/ o /ˈ/ ya que se leerán literalmente.</p>
-
-    <div class="buttons">
-      <button onclick="playAudio()">🔊 Reproducir</button>
-      <button onclick="downloadAudio()">⬇️ Descargar</button>
+    <h1>Varus Speech 1.0</h1>
+    <div class="selectors">
+      <div>
+        <label>Voz en inglés:</label>
+        <select id="voice_en">
+          {% for name in voices['en'] %}
+            <option>{{ name }}</option>
+          {% endfor %}
+        </select>
+        <button onclick="testVoice('en')">Probar voz</button>
+      </div>
+      <div>
+        <label>Voz en español:</label>
+        <select id="voice_es">
+          {% for name in voices['es'] %}
+            <option>{{ name }}</option>
+          {% endfor %}
+        </select>
+        <button onclick="testVoice('es')">Probar voz</button>
+      </div>
     </div>
-
-    <div id="loading" class="loading">⏳ Generando audio... por favor espera.</div>
-    <audio id="audio-player" controls style="display:none;"></audio>
+    <form id="speechForm">
+      <textarea name="text" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
+      <p class="warning">⚠️ Nota: evita símbolos fonéticos como /ɑː/ o /ˈ/ ya que se leerán literalmente.</p>
+      <button type="submit">🔊 Reproducir</button>
+      <a id="download" class="download" style="display:none" download="output.mp3">⬇️ Descargar</a>
+    </form>
+    <audio controls id="audio" style="display:none"></audio>
   </div>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

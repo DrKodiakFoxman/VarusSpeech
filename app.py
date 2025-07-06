@@ -1,80 +1,59 @@
-from flask import Flask, request, send_file, render_template
-import uuid
+from flask import Flask, render_template, request, send_file
+import tempfile
 import os
-import asyncio
-from edge_tts import Communicate
+from TTS.api import TTS
 
 app = Flask(__name__)
 
-@app.route("/")
+# Voces base
+VOICES = {
+    "en": {
+        "Jenny (US)": "tts_models/en/jenny/jenny",
+        "Sam (US)": "tts_models/en/sam/tacotron2-DDC",
+        "Alice (UK)": "tts_models/en/alice/tacotron2-DDC"
+    },
+    "es": {
+        "Dalia (MX)": "tts_models/es/dalia/tacotron2-DDC",
+        "Mia (ES)": "tts_models/es/mai/tacotron2-DDC",
+        "Carlos (AR)": "tts_models/es/carloso/tacotron2-DDC"
+    }
+}
+
+@app.route('/')
 def index():
-    return render_template("index.html")
+    return render_template('index.html', voices=VOICES)
 
-@app.route("/synthesize", methods=["POST"])
-def synthesize():
-    data = request.json
-    text = data.get("text")
-    voice_en = data.get("voice_en", "en-US-JennyNeural")
-    voice_es = data.get("voice_es", "es-MX-DaliaNeural")
+@app.route('/speak', methods=['POST'])
+def speak():
+    text = request.form['text']
+    voice_en = request.form['voice_en']
+    voice_es = request.form['voice_es']
 
-    if not text:
-        return {"error": "No text provided"}, 400
+    segments = []
+    while "[/es]" in text and "[es]" in text:
+        start = text.index("[es]")
+        end = text.index("[/es]") + len("[/es]")
+        segments.append((text[:start], "en"))
+        segments.append((text[start+4:end-5], "es"))
+        text = text[end:]
+    if text:
+        segments.append((text, "en"))
 
-    filename = f"output_{uuid.uuid4().hex}.mp3"
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(process_segments(text, voice_en, voice_es, filename))
+    audio_paths = []
+    for segment, lang in segments:
+        model_name = VOICES[lang][voice_es] if lang == "es" else VOICES[lang][voice_en]
+        tts = TTS(model_name)
+        fp = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+        tts.tts_to_file(text=segment, file_path=fp.name)
+        audio_paths.append(fp.name)
 
-    return send_file(filename, as_attachment=True, download_name="tts_output.mp3")
+    # Combinar audios
+    from pydub import AudioSegment
+    combined = AudioSegment.empty()
+    for path in audio_paths:
+        combined += AudioSegment.from_wav(path)
+        os.remove(path)
 
-@app.route("/preview", methods=["POST"])
-def preview():
-    data = request.json
-    voice = data.get("voice")
-    lang = data.get("lang", "en")
-    if lang == "en":
-        text = "This is a sample of the selected English voice."
-    else:
-        text = "Esta es una muestra de la voz seleccionada en español."
-
-    filename = f"preview_{uuid.uuid4().hex}.mp3"
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(generate_audio(text, voice, filename))
-
-    return send_file(filename, download_name="preview.mp3", mimetype="audio/mpeg")
-
-async def process_segments(text, voice_en, voice_es, output_file):
-    import re
-    segments = re.split(r"(\[es\].*?\[/es\])", text, flags=re.DOTALL)
-    files = []
-
-    for i, segment in enumerate(segments):
-        segment = segment.strip()
-        if not segment:
-            continue
-
-        if segment.startswith("[es]") and segment.endswith("[/es]"):
-            clean_text = segment[4:-5].strip()
-            voice = voice_es
-        else:
-            clean_text = segment
-            voice = voice_en
-
-        filename = f"seg_{uuid.uuid4().hex}.mp3"
-        await generate_audio(clean_text, voice, filename)
-        files.append(filename)
-
-    with open(output_file, "wb") as outfile:
-        for fname in files:
-            with open(fname, "rb") as infile:
-                outfile.write(infile.read())
-            os.remove(fname)
-
-async def generate_audio(text, voice, filename):
-    communicate = Communicate(text, voice=voice)
-    await communicate.save(filename)
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    final_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
+    combined.export(final_path, format="mp3")
+    return send_file(final_path, as_attachment=True)
