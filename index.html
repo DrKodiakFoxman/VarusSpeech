@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Varus Speech</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Varus Speech</h1>
+    <p class="version">Versión 1.0.0</p>
+
+    <div class="section">
+      <label for="voiceSelectEn">Voz en inglés:</label>
+      <select id="voiceSelectEn"></select>
+      <label for="styleSelectEn">Estilo:</label>
+      <select id="styleSelectEn">
+        <option value="neutral">Neutral</option>
+        <option value="cheerful">Cheerful</option>
+        <option value="sad">Sad</option>
+      </select>
+      <button onclick="testVoice('en')">Probar voz</button>
+    </div>
+
+    <div class="section">
+      <label for="voiceSelectEs">Voz en español:</label>
+      <select id="voiceSelectEs"></select>
+      <label for="styleSelectEs">Estilo:</label>
+      <select id="styleSelectEs">
+        <option value="neutral">Neutral</option>
+        <option value="narration">Narration</option>
+        <option value="cheerful">Cheerful</option>
+      </select>
+      <button onclick="testVoice('es')">Probar voz</button>
+    </div>
+
+    <textarea id="textInput" placeholder='Escribe el texto aquí. Usa comillas para español: "Hola, cómo estás?"'></textarea>
+    <button onclick="generateAudio()">Generar Audio</button>
+    <div id="loadingIndicator" class="hidden">Generando audio...</div>
+
+    <audio id="audioPlayer" controls class="hidden"></audio>
+    <a id="downloadLink" href="#" download="varus_speech.mp3" class="hidden">Descargar</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
