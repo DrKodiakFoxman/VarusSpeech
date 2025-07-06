@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Varus Speech 1.0.0</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text to Speech App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
   <div class="container">
-    <h1>Varus Speech 1.0.0</h1>
-    <form id="speechForm" method="post" action="/synthesize">
-      <div class="row">
-        <label>Voz en inglés:</label>
-        <select name="voice">
-          <option value="tts_models/en/jenny/jenny">Jenny (US)</option>
-        </select>
-        <label>Estilo:</label>
-        <select name="style">
-          <option value="default">Default</option>
-          <option value="cheerful">Cheerful</option>
-          <option value="sad">Sad</option>
-          <option value="angry">Angry</option>
-        </select>
-      </div>
-      <textarea name="text" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
-      <div class="note">⚠️ Nota: evita símbolos fonéticos como /ɑː/ o /ʃ/ ya que se leerán literalmente.</div>
-      <button type="submit">🔊 Reproducir</button>
-    </form>
+    <h1>🗣️ English Text to Speech</h1>
+
+    <label for="voice-en">Voz en inglés:</label>
+    <select id="voice-en">
+      <option value="en-US-JennyNeural">Jenny (US)</option>
+      <option value="en-US-GuyNeural">Guy (US)</option>
+      <option value="en-GB-RyanNeural">Ryan (UK)</option>
+    </select>
+    <button onclick="previewVoice('en')">🔊 Probar voz</button>
+
+    <label for="voice-es">Voz en español:</label>
+    <select id="voice-es">
+      <option value="es-MX-DaliaNeural">Dalia (MX)</option>
+      <option value="es-ES-ElviraNeural">Elvira (España)</option>
+      <option value="es-MX-JorgeNeural">Jorge (MX)</option>
+    </select>
+    <button onclick="previewVoice('es')">🔊 Probar voz</button>
+
+    <textarea id="text-input" placeholder="Type your text here using [es] ... [/es] for Spanish."></textarea>
+    <div class="buttons">
+      <button onclick="playAudio()">🔊 Reproducir</button>
+      <button onclick="downloadAudio()">⬇️ Descargar</button>
+    </div>
+    <audio id="audio-player" controls style="display:none;"></audio>
   </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

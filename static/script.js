@@ -3,8 +3,6 @@ async function playAudio() {
   const voice_en = document.getElementById("voice-en").value;
   const voice_es = document.getElementById("voice-es").value;
 
-  document.getElementById("loading").style.display = "block";
-
   const res = await fetch("/synthesize", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -17,7 +15,6 @@ async function playAudio() {
   const audio = document.getElementById("audio-player");
   audio.src = url;
   audio.style.display = "block";
-  document.getElementById("loading").style.display = "none";
   audio.play();
 }
 
@@ -25,8 +22,6 @@ async function downloadAudio() {
   const text = document.getElementById("text-input").value;
   const voice_en = document.getElementById("voice-en").value;
   const voice_es = document.getElementById("voice-es").value;
-
-  document.getElementById("loading").style.display = "block";
 
   const res = await fetch("/synthesize", {
     method: "POST",
@@ -39,7 +34,6 @@ async function downloadAudio() {
   link.href = URL.createObjectURL(blob);
   link.download = "tts_output.mp3";
   link.click();
-  document.getElementById("loading").style.display = "none";
 }
 
 async function previewVoice(lang) {
