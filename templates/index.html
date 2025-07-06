@@ -1,39 +1,77 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Varus Speech</title>
-    <link rel="stylesheet" href="/static/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Varus Speech</title>
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <div class="container">
-        <h1>Varus Speech</h1>
-        <form id="speechForm" method="post" action="/speak">
-            <textarea name="text" placeholder="Type your text here..." required></textarea>
-            <div class="controls">
-                <label for="language">Language:</label>
-                <select name="language" id="language">
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                </select>
-                <label for="style">Style:</label>
-                <select name="style" id="style">
-                    <option value="neutral">Neutral</option>
-                    <option value="cheerful">Cheerful</option>
-                    <option value="sad">Sad</option>
-                    <option value="narration">Narration</option>
-                </select>
-                <button type="submit">Generate Audio</button>
-            </div>
-        </form>
-        {% if audio_url %}
-        <div class="audio-output">
-            <audio controls autoplay>
-                <source src="{{ audio_url }}" type="audio/wav">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-        {% endif %}
+  <h1>Varus Speech</h1>
+  <h2>Versión 1.0.0</h2>
+
+  <div class="block">
+    <div class="horizontal">
+      <div>
+        <label for="voiceEn">Voz en inglés:</label>
+        <select id="voiceEn">
+          <option>Jenny (US)</option>
+          <option>Guy (US)</option>
+          <option>Aria (US)</option>
+        </select>
+      </div>
+      <div>
+        <label for="styleEn">Estilo:</label>
+        <select id="styleEn">
+          <option>Neutral</option>
+          <option>Cheerful</option>
+          <option>Sad</option>
+        </select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button>Probar voz</button>
+      </div>
     </div>
+  </div>
+
+  <div class="block">
+    <div class="horizontal">
+      <div>
+        <label for="voiceEs">Voz en español:</label>
+        <select id="voiceEs">
+          <option>Dalia (MX)</option>
+          <option>Juan (MX)</option>
+          <option>Luis (MX)</option>
+        </select>
+      </div>
+      <div>
+        <label for="styleEs">Estilo:</label>
+        <select id="styleEs">
+          <option>Neutral</option>
+          <option>Narration</option>
+          <option>Excited</option>
+        </select>
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button>Probar voz</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <label for="inputText">Texto a convertir:</label>
+    <textarea id="inputText" rows="5" placeholder="Escribe aquí tu texto..."></textarea>
+    <div class="buttons">
+      <button>Generar Audio</button>
+      <button>Reproducir</button>
+      <button>Descargar</button>
+    </div>
+    <div class="progress">Generando audio...</div>
+    <audio controls></audio>
+    <div class="note">* Evita usar símbolos raros o fonéticos. Usa comillas para marcar frases en español si es necesario.</div>
+  </div>
 </body>
 </html>

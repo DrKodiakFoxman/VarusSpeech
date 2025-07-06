@@ -1,141 +1,30 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Varus Speech</title>
-  <style>
-    body {
-      font-family: 'Courier New', monospace;
-      background-color: #ffffff;
-      color: #111;
-      margin: 40px;
-    }
-    h1 {
-      font-size: 24px;
-      font-weight: bold;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 8px;
-    }
-    h2 {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 20px;
-    }
-    .block {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 24px;
-      background: #f9f9f9;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 8px;
-    }
-    select, textarea, button {
-      width: 100%;
-      padding: 8px;
-      font-size: 14px;
-      margin-bottom: 12px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .horizontal {
-      display: flex;
-      gap: 10px;
-    }
-    .horizontal > div {
-      flex: 1;
-    }
-    .buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .progress {
-      font-size: 12px;
-      color: #888;
-      margin-top: 10px;
-    }
-    audio {
-      margin-top: 16px;
-      width: 100%;
-    }
-    .note {
-      font-size: 12px;
-      color: #555;
-      margin-top: 12px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Varus Speech</h1>
-  <h2>Versión 1.0.0</h2>
-
-  <div class="block">
-    <div class="horizontal">
-      <div>
-        <label for="voiceEn">Voz en inglés:</label>
-        <select id="voiceEn">
-          <option>Jenny (US)</option>
-          <option>Guy (US)</option>
-          <option>Aria (US)</option>
+  <main class="container">
+    <h1>Varus Speech</h1>
+    <p class="version">v1.0</p>
+    <form id="speechForm">
+      <textarea id="text" placeholder="Escribe aquí tu texto..." required></textarea>
+      <div class="options">
+        <label for="language">Idioma:</label>
+        <select id="language">
+          <option value="en">Inglés</option>
+          <option value="es">Español</option>
         </select>
       </div>
-      <div>
-        <label for="styleEn">Estilo:</label>
-        <select id="styleEn">
-          <option>Neutral</option>
-          <option>Cheerful</option>
-          <option>Sad</option>
-        </select>
-      </div>
-      <div>
-        <label>&nbsp;</label>
-        <button onclick="alert('Prueba de voz en inglés')">Probar voz</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="block">
-    <div class="horizontal">
-      <div>
-        <label for="voiceEs">Voz en español:</label>
-        <select id="voiceEs">
-          <option>Dalia (MX)</option>
-          <option>Juan (MX)</option>
-          <option>Luis (MX)</option>
-        </select>
-      </div>
-      <div>
-        <label for="styleEs">Estilo:</label>
-        <select id="styleEs">
-          <option>Neutral</option>
-          <option>Narration</option>
-          <option>Excited</option>
-        </select>
-      </div>
-      <div>
-        <label>&nbsp;</label>
-        <button onclick="alert('Prueba de voz en español')">Probar voz</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="block">
-    <label for="inputText">Texto a convertir:</label>
-    <textarea id="inputText" rows="5" placeholder="Escribe aquí tu texto..."></textarea>
-    <div class="buttons">
-      <button onclick="alert('Generando...')">Generar Audio</button>
-      <button onclick="alert('Reproduciendo...')">Reproducir</button>
-      <button onclick="alert('Descargando...')">Descargar</button>
-    </div>
-    <div class="progress">Generando audio...</div>
-    <audio controls></audio>
-    <div class="note">* Evita usar símbolos raros o fonéticos. Usa comillas para marcar frases en español si es necesario.</div>
-  </div>
-
+      <button type="submit">Generar Voz</button>
+    </form>
+    <div id="loader" class="hidden">Procesando...</div>
+    <audio id="audio" controls class="hidden"></audio>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
